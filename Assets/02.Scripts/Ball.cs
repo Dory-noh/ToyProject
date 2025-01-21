@@ -6,18 +6,21 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] GameObject[] ballPrefabs;
     [SerializeField] bool isColliding = false;
+    
     void Start()
     {
         isColliding = false;
         ballPrefabs = Resources.LoadAll<GameObject>("Balls");
     }
 
-    void Update()
+    private void Update()
     {
-        
+        if (GameManager.instance.isGameOver)
+        {
+            Destroy(gameObject);
+        }
     }
-
-    private void OnCollisionEnter2D(Collision2D col) //���� �±� �� ������Ʈ���� �浹 �� ���ʿ��� �޼��尡 ����Ǿ �ߺ� �����Ǵ� ���� �߻�
+    private void OnCollisionEnter2D(Collision2D col) 
     {
         if (col.transform.CompareTag(transform.tag))
         {

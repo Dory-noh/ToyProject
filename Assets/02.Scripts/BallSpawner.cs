@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class BallSpawner : MonoBehaviour
 {
     [SerializeField] GameObject[] ballPrefabs;
     [SerializeField] Transform tr;
     [SerializeField] Image nextBallImage;
+    [SerializeField] DeadZone deadZone;
     int idx = 0;
     void Start()
     {
@@ -16,11 +18,13 @@ public class BallSpawner : MonoBehaviour
         
         idx = Random.Range(0, 3);
         nextBallImage.color = ballPrefabs[idx].GetComponent<SpriteRenderer>().color;
+        deadZone = GameObject.Find("DeadZone").GetComponent<DeadZone>();
     }
 
     void Update()
     {
-        if(GameManager.instance.isGameOver) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+        if(GameManager.instance.isGameOver && GameManager.instance!=null) return;
         if (Input.GetMouseButtonDown(0))
         {
             RespawnBall();
